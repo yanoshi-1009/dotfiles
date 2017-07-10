@@ -304,8 +304,12 @@ call dein#begin('C:\Users\s000917\.vim\dein')
 call dein#add('Shougo/dein.vim')
 
 " Add or remove your plugins here:
-"call dein#add('Shougo/neosnippet.vim')
-"call dein#add('Shougo/neosnippet-snippets')
+call dein#add('Shougo/neosnippet.vim')
+call dein#add('Shougo/neosnippet-snippets')
+call dein#add('plasticboy/vim-markdown')
+let g:vim_markdown_folding_disabled = 1
+call dein#add('kannokanno/previm')
+call dein#add('tyru/open-browser.vim')
 
 " You can specify revision/branch/tag.
 "call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
