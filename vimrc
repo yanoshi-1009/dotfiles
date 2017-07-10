@@ -4,7 +4,7 @@ scriptencoding utf-8
 " An example for a Japanese version vimrc file.
 " 日本語版のデフォルト設定ファイル(vimrc) - Vim 7.4
 "
-" Last Change: 10-Jul-2017.
+" Last Change: 11-Jul-2017.
 " Maintainer:  MURAOKA Taro <koron.kaoriya@gmail.com>
 "
 " 解説:
@@ -289,41 +289,35 @@ nmap <Esc><Esc> :nohlsearch<CR><Esc>
 "unファイルの保存場所
 set undodir=C:\Users\s000917\Documents\undo\
 
-"dein Scripts-----------------------------
-if &compatible
-  set nocompatible               " Be iMproved
+" プラグインが実際にインストールされるディレクトリ
+let s:dein_dir = expand('~\.vim\dein')
+" dein.vim 本体
+let s:dein_repo_dir = s:dein_dir . '\repos\github.com\Shougo\dein.vim'
+" dein.vim がなければ github から落としてくる
+if &runtimepath !~# '/dein.vim'
+    if !isdirectory(s:dein_repo_dir)
+        execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+    endif
+    "execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
+    execute 'set runtimepath^=' . s:dein_repo_dir
 endif
-
-" Required:
-set runtimepath+=C:\Users\s000917\.vim\dein\repos\github.com\Shougo\dein.vim
-" Required:
-call dein#begin('C:\Users\s000917\.vim\dein')
-
-" Let dein manage dein
-" Required:
-call dein#add('Shougo/dein.vim')
-
-" Add or remove your plugins here:
-call dein#add('Shougo/neosnippet.vim')
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('plasticboy/vim-markdown')
-let g:vim_markdown_folding_disabled = 1
-call dein#add('kannokanno/previm')
-call dein#add('tyru/open-browser.vim')
-
-" You can specify revision/branch/tag.
-"call dein#add('Shougo/vimshell', { 'rev': '3787e5' })
-
-" Required:
-call dein#end()
-
-" Required:
-filetype plugin indent on
-syntax enable
-
-" If you want to install not installed plugins on startup.
+" 設定開始
+if dein#load_state(s:dein_dir)
+  call dein#begin(s:dein_dir)
+  " プラグインリストを収めた TOML ファイル
+  " 予め TOML ファイル（後述）を用意しておく
+  let g:rc_dir    = expand('~/.vim/rc')      "ここも .vim → vimfiles に変えた
+  let s:toml      = g:rc_dir . '/dein.toml'
+  "let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
+  " TOML を読み込み、キャッシュしておく
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  "call dein#load_toml(s:lazy_toml, {'lazy': 1})
+  " 設定終了
+  call dein#end()
+  call dein#save_state()
+endif
+" もし、未インストールものものがあったらインストール
 if dein#check_install()
   call dein#install()
 endif
-
 "End dein Scripts-------------------------
